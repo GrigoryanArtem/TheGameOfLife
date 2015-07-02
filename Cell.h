@@ -14,6 +14,8 @@ public:
 	void kill();
 
 	size_t get_level()const _NOEXCEPT;
+
+	void draw()const _NOEXCEPT;
 private:
 	size_t level;
 	size_t max_level;

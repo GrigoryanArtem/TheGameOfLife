@@ -34,3 +34,10 @@ bool Cell::is_alive()const{
 size_t Cell::get_level()const{
 	return this->level;
 }
+
+void Cell::draw()const{
+	if (this->level == 0)
+		std::cout << ' ';
+	else
+		std::cout << this->level;
+}
