@@ -1,21 +1,45 @@
 #include <iostream>
 #include <random>
+#include <glut.h>
 
 #include "Field.h"
 
 void Field::draw()const{
-	for (size_t i = 1; i < this->field.size() - 1; i++){
-		for (size_t k = 1; k < this->field.at(i).size() - 1; k++)
-			this->field.at(i).at(k).draw();
+	for (size_t i = 1; i < this->size_x; i++)
+		for (size_t k = 1; k < this->size_y; k++)
+			this->field.at(i).at(k).draw(k, i);
 
-		std::endl(std::cout);
+	glColor3b(0, 0, 0);
+
+	glBegin(GL_LINES);
+
+	for (size_t i = 1; i <= this->size_x; i++){
+		glVertex3f(1, i, 0);
+		glVertex3f(this->size_y, i, 0);
 	}
+
+	for (size_t i = 1; i <= this->size_y; i++){
+		glVertex3f(i, 1, 0);
+		glVertex3f(i, this->size_x, 0);
+	}
+	
+	glEnd();
+
+	
+
 }
 
 size_t Field::get_count()const{
 	return this->count;
 }
 
+size_t Field::get_size_x() const{
+	return this->size_x;
+}
+
+size_t Field::get_size_y() const{
+	return this->size_y;
+}
 
 size_t Field::number_of_living_cells(size_t x, size_t y)const{
 	size_t count(0);
@@ -31,11 +55,11 @@ size_t Field::number_of_living_cells(size_t x, size_t y)const{
 void Field::generate(){
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 1);
+	std::uniform_int_distribution<> dist(0, 7);
 
 	for (size_t i = 1; i < this->field.size() - 1; i++)
 		for (size_t k = 1; k < this->field.at(i).size() - 1; k++)
-			this->field[i][k] = Cell(dist(gen) ,this->max_cell_level);
+			this->field[i][k] = Cell(dist(gen) > 0 ? 0 : 1  ,this->max_cell_level);
 }
 
 void Field::make_step(){

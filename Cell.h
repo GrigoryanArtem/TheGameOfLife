@@ -15,7 +15,7 @@ public:
 
 	size_t get_level()const _NOEXCEPT;
 
-	void draw()const _NOEXCEPT;
+	void draw(size_t x, size_t y)const _NOEXCEPT;
 private:
 	size_t level;
 	size_t max_level;

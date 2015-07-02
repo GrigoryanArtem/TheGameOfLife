@@ -1,19 +1,11 @@
 #include <iostream>
-#include <Windows.h>
 
-#include "Field.h"
+#include "Life.h"
 
-int main(){
-	Field fld(23,70,6);
+int main(int argc, char** argv){
+	Life game(20,25,6);
 
-	fld.generate();
-
-	while (true){
-		system("cls");
-		fld.draw();
-		fld.make_step();
-		Sleep(400);
-	}
+	game.start_game(argc,argv);
 
 	return 0;
 }
