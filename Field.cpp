@@ -5,28 +5,25 @@
 #include "Field.h"
 
 void Field::draw()const{
-	for (size_t i = 1; i < this->size_x; i++)
-		for (size_t k = 1; k < this->size_y; k++)
+	for (size_t i = 1; i <= this->size_x; i++)
+		for (size_t k = 1; k <= this->size_y; k++)
 			this->field.at(i).at(k).draw(k, i);
 
 	glColor3b(0, 0, 0);
 
 	glBegin(GL_LINES);
 
-	for (size_t i = 1; i <= this->size_x; i++){
+	for (size_t i = 1; i <= this->size_x + 1; i++){
 		glVertex3f(1, i, 0);
-		glVertex3f(this->size_y, i, 0);
+		glVertex3f(this->size_y + 1, i, 0);
 	}
 
-	for (size_t i = 1; i <= this->size_y; i++){
+	for (size_t i = 1; i <= this->size_y + 1; i++){
 		glVertex3f(i, 1, 0);
-		glVertex3f(i, this->size_x, 0);
+		glVertex3f(i, this->size_x + 1, 0);
 	}
-	
+
 	glEnd();
-
-	
-
 }
 
 size_t Field::get_count()const{
@@ -63,7 +60,7 @@ void Field::generate(){
 }
 
 void Field::make_step(){
-	std::vector<std::vector<Cell> > temp(size_x, std::vector<Cell>(size_y, Cell(this->max_cell_level)));
+	std::vector<std::vector<Cell> > temp(size_x + 2, std::vector<Cell>(size_y + 2, Cell(this->max_cell_level)));
 
 	for (size_t i = 1; i < this->field.size() - 1; i++){
 		for (size_t k = 1; k < this->field.at(i).size() - 1; k++){

@@ -7,9 +7,7 @@
 
 class Life{
 public:
-	Life(size_t size_x, size_t size_y, size_t max_level) : field(size_x, size_y, max_level){
-		static_this = this;
-	}
+	Life(size_t size_x, size_t size_y, size_t max_level);
 
 	void start_game(int argc, char** argv);
 private:
@@ -19,6 +17,7 @@ private:
 
 	void init_gl();
 	static void draw_game();
+	static void timer_game(int);
 };
 
 #endif
