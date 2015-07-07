@@ -14,7 +14,7 @@ void Life::start_game(int argc, char** argv){
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(1280, 720);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("<= Life by.GrigoryanArtem =>");
 
@@ -30,16 +30,25 @@ void Life::init_gl(){
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glOrtho(0, this->field.get_size_y() + 2, 0, this->field.get_size_x() + 2, -100, 100);
+	gluPerspective(63, (float)1280 / 720, 1, 10000); 
+	glTranslatef(-54.0, -30.0, -50.0);
+	glRotatef(-45, 1, 0, 0);
+
+	//glOrtho(0, this->field.get_size_y() + 2, 0, this->field.get_size_x() + 2, -100, 100);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	
 }
 
 void Life::draw_game(){
-	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	static_this->field.draw();
 
+	glDisable(GL_DEPTH_TEST);
 	glutSwapBuffers();
 }
 

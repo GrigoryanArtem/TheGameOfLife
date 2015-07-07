@@ -52,15 +52,17 @@ size_t Field::number_of_living_cells(size_t x, size_t y)const{
 void Field::generate(){
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 7);
+	std::uniform_int_distribution<> dist(0, 6);
 
 	for (size_t i = 1; i < this->field.size() - 1; i++)
 		for (size_t k = 1; k < this->field.at(i).size() - 1; k++)
-			this->field[i][k] = Cell(dist(gen) > 0 ? 0 : 1  ,this->max_cell_level);
+			this->field[i][k] = Cell(this->max_cell_level, dist(gen) > 0 ? 0 : 1);
 }
 
 void Field::make_step(){
 	std::vector<std::vector<Cell> > temp(size_x + 2, std::vector<Cell>(size_y + 2, Cell(this->max_cell_level)));
+
+	this->ticks++;
 
 	for (size_t i = 1; i < this->field.size() - 1; i++){
 		for (size_t k = 1; k < this->field.at(i).size() - 1; k++){
@@ -78,8 +80,10 @@ void Field::make_step(){
 					temp[i][k].kill();
 			}
 			else{
-				if (this->number_of_living_cells(i, k) == 3)
+				if (this->number_of_living_cells(i, k) == 3){
 					temp[i][k].increase();
+					temp[i][k].set_birthday(this->ticks);
+				}
 			}
 		}
 	}

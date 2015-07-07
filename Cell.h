@@ -5,8 +5,10 @@
 
 class Cell{
 public:
-	Cell(size_t max_level) :level(0), max_level(max_level){}
-	Cell(size_t level, size_t max_level);
+	Cell(size_t max_level);
+	Cell(size_t max_level,size_t level);
+
+	void set_birthday(size_t birthday);
 
 	bool increase() _NOEXCEPT;
 	bool reduce() _NOEXCEPT;
@@ -19,6 +21,12 @@ public:
 private:
 	size_t level;
 	size_t max_level;
+	size_t birthday;
+
+	void(*color)();
+
+	void draw_block(size_t x, size_t y, int hight)const;
+	void set_color();
 };
 
 #endif

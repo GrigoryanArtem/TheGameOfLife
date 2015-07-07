@@ -9,7 +9,7 @@
 
 class Field{
 public:
-	Field(size_t size_x, size_t size_y, size_t max_cell_level) :size_x(size_x), size_y(size_y), count(0), 
+	Field(size_t size_x, size_t size_y, size_t max_cell_level) :size_x(size_x), size_y(size_y), count(0), ticks(0),
 		max_cell_level(max_cell_level), field(size_x + 2, std::vector<Cell>(size_y + 2, Cell(max_cell_level))){}
 
 	void draw() const;
@@ -27,6 +27,8 @@ private:
 	size_t size_x;
 	size_t size_y;
 	size_t count;
+	size_t ticks;
+
 	size_t max_cell_level;
 
 	std::vector<std::vector<Cell> > field;
