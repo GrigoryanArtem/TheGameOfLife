@@ -18,9 +18,6 @@ private:
 	size_t width;
 	size_t height;
 
-	int angle_z;
-	int angle_y;
-
 	static Life* static_this;
 
 	void(*view_func)();
@@ -31,6 +28,7 @@ private:
 	static void init_2d();
 	static void init_3d();
 
+	static void reshape(int width, int height);
 	static void special_keyboard(int key, int x, int y);
 	static void draw_game();
 	static void timer_game(int);
