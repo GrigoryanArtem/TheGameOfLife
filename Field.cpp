@@ -1,8 +1,40 @@
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <glut.h>
 
 #include "Field.h"
+
+Field::Field(const char* file_name){
+	std::ifstream map(file_name);
+	size_t sz_x, sz_y, mx_lvl; // sz - size, mx - max
+
+	map >> sz_x >> sz_y >> mx_lvl;
+
+	this->size_x = sz_x;
+	this->size_y = sz_y;
+	this->max_cell_level = mx_lvl;
+
+	this->field = std::vector<std::vector<Cell> >(size_x + 2, std::vector<Cell>(size_y + 2, Cell(max_cell_level)));
+
+	int temp;
+	map >> temp;
+	if (temp){
+		this->generate(temp);
+	}
+	else{
+		for (size_t i = 0; i < sz_x; i++){
+			for (size_t k = 0; k < sz_y; k++){
+				map >> temp;
+
+				if (temp)
+					this->select(sz_x - i - 1, k, temp);
+			}
+		}
+	}
+
+	map.close();
+}
 
 void Field::draw()const{
 	for (size_t i = 1; i <= this->size_x; i++)
@@ -49,14 +81,14 @@ size_t Field::number_of_living_cells(size_t x, size_t y)const{
 	return (this->field.at(x).at(y).is_alive() ? count - 1 : count);
 }
 
-void Field::generate(){
+void Field::generate(size_t probability){
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 6);
+	std::uniform_int_distribution<> dist(0, 100);
 
 	for (size_t i = 1; i < this->field.size() - 1; i++)
 		for (size_t k = 1; k < this->field.at(i).size() - 1; k++)
-			this->field[i][k] = Cell(this->max_cell_level, dist(gen) > 0 ? 0 : 1);
+			this->field[i][k] = Cell(this->max_cell_level, (int)probability < dist(gen) ? 1 : 0);
 }
 
 void Field::make_step(){
@@ -89,4 +121,18 @@ void Field::make_step(){
 	}
 
 	this->field = temp;
+}
+
+void Field::select(size_t x, size_t y){
+	if (x > this->size_x || y > this->size_y)
+		throw std::out_of_range("out");
+
+	this->field[x + 1][y + 1] = Cell(this->max_cell_level, 1);
+}
+
+void Field::select(size_t x, size_t y, size_t level){
+	if (x > this->size_x || y > this->size_y)
+		throw std::out_of_range("out");
+
+	this->field[x + 1][y + 1] = Cell(this->max_cell_level, level);
 }
